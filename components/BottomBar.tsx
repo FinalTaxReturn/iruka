@@ -22,6 +22,10 @@ const BottomMenuBar = () => {
     newOscillator.type = "sine";
     newOscillator.frequency.setValueAtTime(20000, newAudioCtx.currentTime);
     newOscillator.connect(newAudioCtx.destination);
+
+    const gainNode = newAudioCtx.createGain();
+    gainNode.gain.setValueAtTime(gainNode.gain.maxValue, newAudioCtx.currentTime);
+    newOscillator.connect(gainNode);
     newOscillator.start();
 
     setAudioCtx(newAudioCtx);
