@@ -31,6 +31,16 @@ const BottomMenuBar = () => {
             aria-label="Toggle Speaker"
             onClick={() => {
               setSpeaker(!speaker);
+              let audioCtx = new (window.AudioContext)();
+              if (!speaker) {
+                const oscillator = audioCtx.createOscillator();
+                oscillator.type = "sine";
+                oscillator.frequency.setValueAtTime(20000, audioCtx.currentTime);
+                oscillator.connect(audioCtx.destination);
+                oscillator.start();
+              } else {
+                audioCtx.close();
+              }
             }}
           >
             {speaker ? <FaVolumeUp /> : <FaVolumeMute />}
