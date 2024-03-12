@@ -26,6 +26,7 @@ const BottomMenuBar = () => {
     const gainNode = newAudioCtx.createGain();
     gainNode.gain.setValueAtTime(gainNode.gain.maxValue, newAudioCtx.currentTime);
     newOscillator.connect(gainNode);
+    console.log("Starting oscillator");
     newOscillator.start();
 
     setAudioCtx(newAudioCtx);
@@ -38,12 +39,15 @@ const BottomMenuBar = () => {
 
   const toggleSpeaker = () => {
     if(!oscillator) {
+      console.error("Oscillator not found");
       return;
     }
 
     if (!speaker) {
+      console.log("Starting oscillator");
       oscillator.start();
     } else {
+      console.log("Stopping oscillator");
       oscillator.stop();
     }
     setSpeaker(!speaker);
