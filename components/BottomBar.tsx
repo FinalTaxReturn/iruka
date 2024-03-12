@@ -8,11 +8,41 @@ import {
   FaVolumeUp,
   FaVolumeMute,
 } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const BottomMenuBar = () => {
   const [mic, setMic] = useState(true);
   const [speaker, setSpeaker] = useState(true);
+  const [, setAudioCtx] = useState<AudioContext>();
+  const [oscillator, setOscillator] = useState<OscillatorNode>();
+
+  useEffect(() => {
+    const newAudioCtx = new (window.AudioContext)();
+    const newOscillator = newAudioCtx.createOscillator();
+    newOscillator.type = "sine";
+    newOscillator.frequency.setValueAtTime(20000, newAudioCtx.currentTime);
+    newOscillator.connect(newAudioCtx.destination);
+    setAudioCtx(newAudioCtx);
+    setOscillator(newOscillator);
+    return () => {
+      newOscillator.stop();
+      newAudioCtx.close();
+    };
+  }, []);
+
+  const toggleSpeaker = () => {
+    if(!oscillator) {
+      return;
+    }
+    
+    if (!speaker) {
+      oscillator.start();
+    } else {
+      oscillator.stop();
+    }
+    setSpeaker(!speaker);
+  };
+
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white shadow-top p-3">
       <div className="flex justify-between items-center px-4 py-2">
@@ -29,19 +59,7 @@ const BottomMenuBar = () => {
           <ToggleGroupItem
             value="italic"
             aria-label="Toggle Speaker"
-            onClick={() => {
-              setSpeaker(!speaker);
-              let audioCtx = new (window.AudioContext)();
-              if (!speaker) {
-                const oscillator = audioCtx.createOscillator();
-                oscillator.type = "sine";
-                oscillator.frequency.setValueAtTime(20000, audioCtx.currentTime);
-                oscillator.connect(audioCtx.destination);
-                oscillator.start();
-              } else {
-                audioCtx.close();
-              }
-            }}
+            onClick={toggleSpeaker}
           >
             {speaker ? <FaVolumeUp /> : <FaVolumeMute />}
           </ToggleGroupItem>
