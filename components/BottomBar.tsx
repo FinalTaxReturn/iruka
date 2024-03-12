@@ -26,10 +26,10 @@ const BottomMenuBar = () => {
     const gainNode = newAudioCtx.createGain();
     gainNode.gain.setValueAtTime(gainNode.gain.maxValue, newAudioCtx.currentTime);
     newOscillator.connect(gainNode);
+    newOscillator.start();
 
     setAudioCtx(newAudioCtx);
     setOscillator(newOscillator);
-    newOscillator.start();
     return () => {
       newOscillator.stop();
       newAudioCtx.close();
