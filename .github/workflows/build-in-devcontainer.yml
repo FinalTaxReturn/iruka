@@ -9,11 +9,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Build
-      uses: devcontainers/ci@v0.3
-      with:
-        push: never
-        runCmd: pnpm build
+      - name: Build
+        uses: devcontainers/ci@v0.3
+        with:
+          push: never
+          runCmd: pnpm build
