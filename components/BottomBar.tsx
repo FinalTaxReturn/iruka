@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
-import { Button } from "./ui/button";
+import { ToggleGroup, ToggleGroupItem } from './ui/toggle-group';
+import { Button } from './ui/button';
 import {
   FaMicrophone,
   FaMicrophoneSlash,
@@ -53,12 +53,12 @@ const BottomMenuBar = () => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white shadow-top p-3">
-      <div className="flex justify-between items-center px-4 py-2">
-        <ToggleGroup variant="outline" type="multiple">
+    <div className='fixed bottom-0 left-0 right-0 bg-white shadow-top p-3'>
+      <div className='flex justify-between items-center px-4 py-2'>
+        <ToggleGroup variant='outline' type='multiple'>
           <ToggleGroupItem
-            value="bold"
-            aria-label="Toggle Mic"
+            value='bold'
+            aria-label='Toggle Mic'
             onClick={() => {
               setMic(!mic);
             }}
@@ -73,8 +73,8 @@ const BottomMenuBar = () => {
             {speaker ? <FaVolumeUp /> : <FaVolumeMute />}
           </ToggleGroupItem>
         </ToggleGroup>
-        <Button variant="destructive">
-          <span className="text-xs">Leave Room</span>
+        <Button variant='destructive'>
+          <span className='text-xs'>Leave Room</span>
         </Button>
       </div>
     </div>
