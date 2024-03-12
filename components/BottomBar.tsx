@@ -33,7 +33,6 @@ const BottomMenuBar = () => {
   };
 
   useEffect(() => {
-    initializeAudio();
     return () => {
       oscillator?.stop();
       audioCtx?.close();
