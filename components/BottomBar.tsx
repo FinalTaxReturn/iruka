@@ -12,7 +12,7 @@ import { useState, useEffect } from "react";
 
 const BottomMenuBar = () => {
   const [mic, setMic] = useState(true);
-  const [speaker, setSpeaker] = useState(true);
+  const [speaker, setSpeaker] = useState(false);
   const [audioCtx, setAudioCtx] = useState<AudioContext>();
   const [oscillator, setOscillator] = useState<OscillatorNode>();
 
