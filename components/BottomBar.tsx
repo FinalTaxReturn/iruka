@@ -23,9 +23,9 @@ const BottomMenuBar = () => {
     newOscillator.frequency.setValueAtTime(20000, newAudioCtx.currentTime);
     newOscillator.connect(newAudioCtx.destination);
 
-    const gainNode = newAudioCtx.createGain();
-    gainNode.gain.setValueAtTime(gainNode.gain.maxValue, newAudioCtx.currentTime);
-    newOscillator.connect(gainNode);
+    // const gainNode = newAudioCtx.createGain();
+    // gainNode.gain.setValueAtTime(gainNode.gain.maxValue, newAudioCtx.currentTime);
+    // newOscillator.connect(gainNode);
     console.log("Starting oscillator");
     newOscillator.start();
 
