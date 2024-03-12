@@ -12,7 +12,7 @@ import { useState } from "react";
 
 const BottomMenuBar = () => {
   const [mic, setMic] = useState(true);
-  const [speaker, setSpeaker] = useState(false);
+  const [speaker, setSpeaker] = useState(true);
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white shadow-top p-3">
       <div className="flex justify-between items-center px-4 py-2">
