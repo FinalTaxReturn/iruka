@@ -13,42 +13,38 @@ import { useState, useEffect } from "react";
 const BottomMenuBar = () => {
   const [mic, setMic] = useState(true);
   const [speaker, setSpeaker] = useState(true);
-  const [, setAudioCtx] = useState<AudioContext>();
+  const [audioCtx, setAudioCtx] = useState<AudioContext>();
   const [oscillator, setOscillator] = useState<OscillatorNode>();
 
-  useEffect(() => {
+  const initializeAudio = () => {
     const newAudioCtx = new (window.AudioContext)();
     const newOscillator = newAudioCtx.createOscillator();
     newOscillator.type = "sine";
     newOscillator.frequency.setValueAtTime(20000, newAudioCtx.currentTime);
     newOscillator.connect(newAudioCtx.destination);
-
-    // const gainNode = newAudioCtx.createGain();
-    // gainNode.gain.setValueAtTime(gainNode.gain.maxValue, newAudioCtx.currentTime);
-    // newOscillator.connect(gainNode);
-    console.log("Starting oscillator");
     newOscillator.start();
 
     setAudioCtx(newAudioCtx);
     setOscillator(newOscillator);
+  };
+
+  useEffect(() => {
+    initializeAudio();
     return () => {
-      newOscillator.stop();
-      newAudioCtx.close();
+      oscillator?.stop();
+      audioCtx?.close();
     };
   }, []);
 
   const toggleSpeaker = () => {
-    if(!oscillator) {
-      console.error("Oscillator not found");
-      return;
-    }
-
     if (!speaker) {
-      console.log("Starting oscillator");
-      oscillator.start();
+      console.log("Creating and starting a new oscillator");
+      initializeAudio();
     } else {
       console.log("Stopping oscillator");
-      oscillator.stop();
+      oscillator?.stop();
+      oscillator?.disconnect();
+      audioCtx?.close();
     }
     setSpeaker(!speaker);
   };
