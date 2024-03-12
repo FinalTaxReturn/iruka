@@ -29,7 +29,7 @@ const BottomMenuBar = () => {
 
     setAudioCtx(newAudioCtx);
     setOscillator(newOscillator);
-    oscillator.start();
+    newOscillator.start();
     return () => {
       newOscillator.stop();
       newAudioCtx.close();
