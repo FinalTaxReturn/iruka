@@ -16,8 +16,8 @@ updates:
     schedule:
       interval: 'daily'
 
-  - package-ecosystem: "devcontainers"
+  - package-ecosystem: 'devcontainers'
     # https://containers.dev/guide/dependabot
-    directory: "/"
+    directory: '/'
     schedule:
       interval: daily
