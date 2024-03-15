@@ -38,7 +38,7 @@ const BottomMenuBar = () => {
           // 分析する周波数範囲を定義
           const frequencies = [19000, 19500, 19999];
           const nyquist = audioContext.sampleRate / 2;
-          const threshold = 30; // 適切な閾値に設定
+          const threshold = 50; // 適切な閾値に設定
 
           frequencies.forEach((frequency) => {
             const index = Math.round((frequency / nyquist) * bufferLength);
