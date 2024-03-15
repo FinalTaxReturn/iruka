@@ -11,10 +11,61 @@ import {
 import { useState, useEffect } from 'react';
 
 const BottomMenuBar = () => {
-  const [mic, setMic] = useState(true);
+  const [mic, setMic] = useState(false);
   const [speaker, setSpeaker] = useState(false);
   const [audioCtx, setAudioCtx] = useState<AudioContext>();
   const [oscillator, setOscillator] = useState<OscillatorNode>();
+
+  const [capture, setCapture] = useState(false);
+
+  // マイクの音声データを処理する関数
+  const analyzeAudio = () => {
+    navigator.mediaDevices
+      .getUserMedia({ audio: true, video: false })
+      .then((stream) => {
+        const audioContext = new AudioContext();
+        const analyser = audioContext.createAnalyser();
+        const microphone = audioContext.createMediaStreamSource(stream);
+        microphone.connect(analyser);
+        analyser.fftSize = 2048;
+
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        const checkFrequencies = () => {
+          analyser.getByteFrequencyData(dataArray);
+
+          // 分析する周波数範囲を定義
+          const frequencies = [19000, 19500, 19999];
+          const nyquist = audioContext.sampleRate / 2;
+          const threshold = 30; // 適切な閾値に設定
+
+          frequencies.forEach((frequency) => {
+            const index = Math.round((frequency / nyquist) * bufferLength);
+            if (dataArray[index] > threshold) {
+              setCapture(true);
+              console.log(`周波数: ${frequency}Hz, 強度: ${dataArray[index]}`);
+            } else {
+              setCapture(false);
+            }
+          });
+
+          requestAnimationFrame(checkFrequencies);
+        };
+
+        checkFrequencies();
+      })
+      .catch((error) => {
+        console.error('マイクのアクセスに失敗しました。', error);
+      });
+  };
+
+  // マイクの状態が変わった時に呼び出されるuseEffect
+  useEffect(() => {
+    if (mic) {
+      analyzeAudio();
+    }
+  }, [mic]);
 
   const initializeAudio = () => {
     const newAudioCtx = new window.AudioContext();
@@ -76,6 +127,12 @@ const BottomMenuBar = () => {
             {speaker ? <FaVolumeUp /> : <FaVolumeMute />}
           </ToggleGroupItem>
         </ToggleGroup>
+        {capture && (
+          <div className='flex items-center'>
+            <div className='w-2 h-2 bg-red-500 rounded-full mr-2'></div>
+            <span className='text-xs'>Capturing</span>
+          </div>
+        )}
         <Button variant='destructive'>
           <span className='text-xs'>Leave Room</span>
         </Button>
