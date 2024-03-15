@@ -36,7 +36,7 @@ const BottomMenuBar = () => {
           analyser.getByteFrequencyData(dataArray);
 
           // 分析する周波数範囲を定義
-          const frequencies = [19000, 19500, 19999];
+          const frequencies = [21000];
           const nyquist = audioContext.sampleRate / 2;
           const threshold = 50; // 適切な閾値に設定
 
@@ -71,7 +71,7 @@ const BottomMenuBar = () => {
     const newAudioCtx = new window.AudioContext();
     const newOscillator = newAudioCtx.createOscillator();
     newOscillator.type = 'sine';
-    newOscillator.frequency.setValueAtTime(20000, newAudioCtx.currentTime);
+    newOscillator.frequency.setValueAtTime(21000, newAudioCtx.currentTime);
     newOscillator.connect(newAudioCtx.destination);
 
     const gainNode = newAudioCtx.createGain();
