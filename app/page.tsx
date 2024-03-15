@@ -36,7 +36,7 @@ export default function Home() {
     'use server';
     const roomId = formData.get('room-id');
 
-    if (roomId?.toString()?.length === 6) {
+    if (/^[A-Z0-9]{6}$/.test(roomId?.toString()?.toUpperCase() ?? '')) {
       redirect(`/${roomId}`);
     }
   };
