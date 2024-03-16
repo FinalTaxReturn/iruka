@@ -7,8 +7,8 @@ import {
   FaMicrophoneSlash,
   FaVolumeUp,
   FaVolumeMute,
-} from "react-icons/fa";
-import { useState, useEffect } from "react";
+} from 'react-icons/fa';
+import { useState, useEffect } from 'react';
 
 const BottomMenuBar = () => {
   const [mic, setMic] = useState(true);
@@ -17,14 +17,17 @@ const BottomMenuBar = () => {
   const [oscillator, setOscillator] = useState<OscillatorNode>();
 
   const initializeAudio = () => {
-    const newAudioCtx = new (window.AudioContext)();
+    const newAudioCtx = new window.AudioContext();
     const newOscillator = newAudioCtx.createOscillator();
-    newOscillator.type = "sine";
+    newOscillator.type = 'sine';
     newOscillator.frequency.setValueAtTime(20000, newAudioCtx.currentTime);
     newOscillator.connect(newAudioCtx.destination);
 
     const gainNode = newAudioCtx.createGain();
-    gainNode.gain.setValueAtTime(gainNode.gain.maxValue, newAudioCtx.currentTime);
+    gainNode.gain.setValueAtTime(
+      gainNode.gain.maxValue,
+      newAudioCtx.currentTime,
+    );
     newOscillator.connect(gainNode);
     newOscillator.start();
 
@@ -37,14 +40,14 @@ const BottomMenuBar = () => {
       oscillator?.stop();
       audioCtx?.close();
     };
-  }, []);
+  }, [audioCtx, oscillator]);
 
   const toggleSpeaker = () => {
     if (!speaker) {
-      console.log("Creating and starting a new oscillator");
+      console.log('Creating and starting a new oscillator');
       initializeAudio();
     } else {
-      console.log("Stopping oscillator");
+      console.log('Stopping oscillator');
       oscillator?.stop();
       oscillator?.disconnect();
       audioCtx?.close();
@@ -66,8 +69,8 @@ const BottomMenuBar = () => {
             {mic ? <FaMicrophone /> : <FaMicrophoneSlash />}
           </ToggleGroupItem>
           <ToggleGroupItem
-            value="italic"
-            aria-label="Toggle Speaker"
+            value='italic'
+            aria-label='Toggle Speaker'
             onClick={toggleSpeaker}
           >
             {speaker ? <FaVolumeUp /> : <FaVolumeMute />}
