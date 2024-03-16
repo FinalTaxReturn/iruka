@@ -16,7 +16,7 @@ const BottomMenuBar = () => {
   const [audioCtx, setAudioCtx] = useState<AudioContext>();
   const [oscillator, setOscillator] = useState<OscillatorNode>();
 
-  const [capture, setCapture] = useState(false);
+  const [captures, setCaptures] = useState<number[]>([]);
 
   // マイクの音声データを処理する関数
   const analyzeAudio = () => {
@@ -36,17 +36,17 @@ const BottomMenuBar = () => {
           analyser.getByteFrequencyData(dataArray);
 
           // 分析する周波数範囲を定義
-          const frequencies = [21000];
+          const frequencies = [20000, 21000];
           const nyquist = audioContext.sampleRate / 2;
-          const threshold = 50; // 適切な閾値に設定
+          const threshold = 100; // 適切な閾値に設定
+
+          setCaptures([]);
 
           frequencies.forEach((frequency) => {
             const index = Math.round((frequency / nyquist) * bufferLength);
             if (dataArray[index] > threshold) {
-              setCapture(true);
+              setCaptures([...captures, frequency]);
               console.log(`周波数: ${frequency}Hz, 強度: ${dataArray[index]}`);
-            } else {
-              setCapture(false);
             }
           });
 
@@ -127,10 +127,12 @@ const BottomMenuBar = () => {
             {speaker ? <FaVolumeUp /> : <FaVolumeMute />}
           </ToggleGroupItem>
         </ToggleGroup>
-        {capture && (
+        {captures.length > 0 && (
           <div className='flex items-center'>
             <div className='w-2 h-2 bg-red-500 rounded-full mr-2'></div>
-            <span className='text-xs'>Capturing</span>
+            <span className='text-xs'>
+              {captures.map((capture) => `${capture}Hz `)}
+            </span>
           </div>
         )}
         <Button variant='destructive'>

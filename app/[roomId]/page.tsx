@@ -12,7 +12,8 @@ export default async function Page({ params }: { params: { roomId: string } }) {
     redirect('/');
   }
 
-  const result = await sql`SELECT * FROM rooms WHERE roomid = ${params.roomId}`;
+  const result =
+    await sql`SELECT * FROM rooms WHERE roomid = ${params.roomId.toUpperCase()}`;
 
   if (result.rowCount === 0) {
     redirect('/');
@@ -20,12 +21,14 @@ export default async function Page({ params }: { params: { roomId: string } }) {
 
   return (
     <>
-      <TopBar title='Room Name' />
-      <H2>近くのアカウント</H2>
-      {accounts.map((account) => (
-        <UserProfile key={account.id} account={account} />
-      ))}
-      <BottomMenuBar />
+      <TopBar title={`Room: ${params.roomId}`} />
+      <div className='py-20'>
+        <H2>近くのアカウント</H2>
+        {accounts.map((account) => (
+          <UserProfile key={account.id} account={account} />
+        ))}
+        <BottomMenuBar />
+      </div>
     </>
   );
 }
