@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Card, CardContent, CardHeader } from './ui/card';
 
+import Image from 'next/image';
 export type Account = {
   name: string;
   username: string;
@@ -14,8 +15,7 @@ const UserProfile = ({ account }: { account: Account }) => {
       <CardHeader>
         <div className='flex'>
           <Avatar>
-            <AvatarImage src={account.avatarUrl} />
-            <AvatarFallback>TM</AvatarFallback>
+            <Image alt='' width={40} height={40} src={account.avatarUrl} />
           </Avatar>
           <div className='flex flex-col ml-2'>
             <span className='font-bold'>{account.name}</span>

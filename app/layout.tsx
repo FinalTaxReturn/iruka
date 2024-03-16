@@ -18,10 +18,8 @@ export default function RootLayout({
   return (
     <html lang='ja'>
       <body className={inter.className}>
-        <div className='flex justify-center'>
-          <div className='container lg:max-w-4xl px-10 pt-12 pb-36'>
-            {children}
-          </div>
+        <div className='flex justify-center min-h-screen bg-neutral-100'>
+          <div className='container lg:max-w-4xl'>{children}</div>
         </div>
       </body>
     </html>
