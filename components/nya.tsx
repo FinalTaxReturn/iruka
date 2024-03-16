@@ -8,8 +8,8 @@ import { useState } from 'react';
 
 export const Nya = () => {
   const [accounts, setAccount] = useState<Account[]>([]);
-  const call = (a: Account) => {
-    setAccount([...accounts, a]);
+  const call = (a: Account[]) => {
+    setAccount(a);
   };
   const reset = () => {
     setAccount([]);

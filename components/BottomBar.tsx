@@ -15,7 +15,7 @@ const BottomMenuBar = ({
   call,
   reset,
 }: {
-  call: (accounts: Account) => void;
+  call: (accounts: Account[]) => void;
   reset: () => void;
 }) => {
   const [mic, setMic] = useState(false);
@@ -49,27 +49,35 @@ const BottomMenuBar = ({
 
           reset();
 
+          const captures: number[] = [];
+
           frequencies.forEach((frequency) => {
             const index = Math.round((frequency / nyquist) * bufferLength);
             if (dataArray[index] > threshold) {
-              if (frequency === 20900) {
-                call({
-                  name: 'k-taro56',
-                  username: '@k_taro56v2',
-                  avatarUrl: '/2-3OlAFo_400x400.jpg',
-                  following: false,
-                });
-              } else if (frequency === 21000) {
-                call({
-                  name: '**あまたつ**',
-                  username: '@T_Kanntoku',
-                  avatarUrl: '/yP5rxZlT_400x400.jpg',
-                  following: false,
-                });
-              }
+              captures.push(frequency);
               console.log(`周波数: ${frequency}Hz, 強度: ${dataArray[index]}`);
             }
           });
+
+          const a = captures.map((capture) => {
+            if (capture === 20900) {
+              return {
+                name: 'k-taro56',
+                username: '@k_taro56v2',
+                avatarUrl: '/2-3OlAFo_400x400.jpg',
+                following: false,
+              };
+            } else if (capture === 21000) {
+              return {
+                name: '**あまたつ**',
+                username: '@T_Kanntoku',
+                avatarUrl: '/yP5rxZlT_400x400.jpg',
+                following: false,
+              };
+            }
+          });
+
+          call(a.filter(Boolean) as Account[]);
 
           requestAnimationFrame(checkFrequencies);
         };
