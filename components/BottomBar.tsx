@@ -8,9 +8,11 @@ import {
   FaVolumeUp,
   FaVolumeMute,
 } from 'react-icons/fa';
+import { Account } from './UserProfile';
 import { useState, useEffect } from 'react';
+import { accounts } from '@/app/[roomId]/data/accounts';
 
-const BottomMenuBar = () => {
+const BottomMenuBar = ({call}: {call: (accounts: Account[]) => void}) => {
   const [mic, setMic] = useState(false);
   const [speaker, setSpeaker] = useState(false);
   const [audioCtx, setAudioCtx] = useState<AudioContext>();
@@ -36,16 +38,16 @@ const BottomMenuBar = () => {
           analyser.getByteFrequencyData(dataArray);
 
           // 分析する周波数範囲を定義
-          const frequencies = [20000, 21000];
+          const frequencies = [20900, 21000];
           const nyquist = audioContext.sampleRate / 2;
           const threshold = 100; // 適切な閾値に設定
 
-          setCaptures([]);
+          call([]);
 
           frequencies.forEach((frequency) => {
             const index = Math.round((frequency / nyquist) * bufferLength);
             if (dataArray[index] > threshold) {
-              setCaptures([...captures, frequency]);
+              call(accounts);
               console.log(`周波数: ${frequency}Hz, 強度: ${dataArray[index]}`);
             }
           });
@@ -71,7 +73,7 @@ const BottomMenuBar = () => {
     const newAudioCtx = new window.AudioContext();
     const newOscillator = newAudioCtx.createOscillator();
     newOscillator.type = 'sine';
-    newOscillator.frequency.setValueAtTime(21000, newAudioCtx.currentTime);
+    newOscillator.frequency.setValueAtTime(20000, newAudioCtx.currentTime);
     newOscillator.connect(newAudioCtx.destination);
 
     const gainNode = newAudioCtx.createGain();
