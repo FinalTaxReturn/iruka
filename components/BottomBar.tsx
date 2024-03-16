@@ -10,9 +10,14 @@ import {
 } from 'react-icons/fa';
 import { Account } from './UserProfile';
 import { useState, useEffect } from 'react';
-import { accounts } from '@/app/[roomId]/data/accounts';
 
-const BottomMenuBar = ({call}: {call: (accounts: Account[]) => void}) => {
+const BottomMenuBar = ({
+  call,
+  reset,
+}: {
+  call: (accounts: Account) => void;
+  reset: () => void;
+}) => {
   const [mic, setMic] = useState(false);
   const [speaker, setSpeaker] = useState(false);
   const [audioCtx, setAudioCtx] = useState<AudioContext>();
@@ -42,12 +47,26 @@ const BottomMenuBar = ({call}: {call: (accounts: Account[]) => void}) => {
           const nyquist = audioContext.sampleRate / 2;
           const threshold = 100; // 適切な閾値に設定
 
-          call([]);
+          reset();
 
           frequencies.forEach((frequency) => {
             const index = Math.round((frequency / nyquist) * bufferLength);
             if (dataArray[index] > threshold) {
-              call(accounts);
+              if (frequency === 20900) {
+                call({
+                  name: 'k-taro56',
+                  username: '@k_taro56v2',
+                  avatarUrl: '/2-3OlAFo_400x400.jpg',
+                  following: false,
+                });
+              } else if (frequency === 21000) {
+                call({
+                  name: '**あまたつ**',
+                  username: '@T_Kanntoku',
+                  avatarUrl: '/yP5rxZlT_400x400.jpg',
+                  following: false,
+                });
+              }
               console.log(`周波数: ${frequency}Hz, 強度: ${dataArray[index]}`);
             }
           });
